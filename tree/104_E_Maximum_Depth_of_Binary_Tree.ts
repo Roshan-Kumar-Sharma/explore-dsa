@@ -13,15 +13,15 @@
  */
 
 class TreeNode {
-    val: number;
-    left: TreeNode | null;
-    right: TreeNode | null;
+  val: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
 
-    constructor(val: number) {
-        this.val = val;
-        this.left = null;
-        this.right = null;
-    }
+  constructor(val: number) {
+    this.val = val;
+    this.left = null;
+    this.right = null;
+  }
 }
 
 function buildTree(arr: (number | null)[]): TreeNode | null {
@@ -56,7 +56,11 @@ function buildTree(arr: (number | null)[]): TreeNode | null {
   return root;
 }
 
-function printTree(root: TreeNode | null, prefix: string = "", isLeft: boolean = true): void {
+function printTree(
+  root: TreeNode | null,
+  prefix: string = "",
+  isLeft: boolean = true,
+): void {
   if (!root) return;
 
   console.log(prefix + (isLeft ? "├── " : "└── ") + root.val);
@@ -65,14 +69,29 @@ function printTree(root: TreeNode | null, prefix: string = "", isLeft: boolean =
 }
 
 function maxDepth(root: TreeNode | null): number {
-    
-};
+  if (root === null) return 0;
 
+  const queue: TreeNode[] = [root];
+  let depth = 0;
+  while(queue.length) {
+    depth += 1;
+    const levelSize = queue.length;
+    for(let i = 0; i < levelSize; i++) {
+      const node = queue.shift()!
 
-let arr = [3,9,20,null,null,15,7];
+      if(node.left) queue.push(node.left);
+      if(node.right) queue.push(node.right);
+    }
+  }
+
+  return depth;
+}
+
+let arr = [3, 9, 20, null, null, 15, 7];
 
 const tree1 = buildTree(arr);
 
-maxDepth(tree1);
-
 printTree(tree1);
+
+console.log(maxDepth(tree1));
+
