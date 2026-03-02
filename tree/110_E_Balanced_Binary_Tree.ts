@@ -68,6 +68,7 @@ function printTree(
   printTree(root.right, prefix + (isLeft ? "│   " : "    "), false);
 }
 
+// if the height of leaf node is considered to be 0
 function checkHeight(root: TreeNode | null): number {
     if(root === null) return 0;
 
@@ -81,6 +82,21 @@ function checkHeight(root: TreeNode | null): number {
 
     return 1 + Math.max(left, right);
 }
+
+// if the height of the leaf node is considered to be -1
+// function checkHeight(root: TreeNode | null): number {
+//     if(root === null) return -1;
+
+//     let left = checkHeight(root.left) + 1;
+//     if(left === -1) return -1;
+
+//     let right = checkHeight(root.right) + 1;
+//     if(right === -1) return -1;
+
+//     if(Math.abs(left - right) > 1) return -1;
+
+//     return Math.max(left, right);
+// }
 
 function isBalanced(root: TreeNode | null): boolean {
     if(root === null) return true;
