@@ -68,42 +68,32 @@ function printTree(
   printTree(root.right, prefix + (isLeft ? "│   " : "    "), false);
 }
 
-// iterative using bfs
-function maxDepth1(root: TreeNode | null): number {
-  if (root === null) return 0;
+function checkHeight(root: TreeNode | null): number {
+    if(root === null) return 0;
 
-  const queue: TreeNode[] = [root];
-  let depth = 0;
-  while(queue.length) {
-    depth += 1;
-    const levelSize = queue.length;
-    for(let i = 0; i < levelSize; i++) {
-      const node = queue.shift()!
+    let left = checkHeight(root.left);
+    if(left === -1) return -1;
 
-      if(node.left) queue.push(node.left);
-      if(node.right) queue.push(node.right);
-    }
-  }
+    let right = checkHeight(root.right);
+    if(right === -1) return -1;
 
-  return depth;
+    if(Math.abs(left - right) > 1) return -1;
+
+    return 1 + Math.max(left, right);
 }
 
+function isBalanced(root: TreeNode | null): boolean {
+    if(root === null) return true;
 
-// recursion using dfs
-function maxDepth(root: TreeNode | null): number {
-  if (root === null) return 0;
-
-  const left = maxDepth(root.left) + 1;
-  const right = maxDepth(root.right) + 1;
-
-  return Math.max(left, right);
-}
+    return checkHeight(root) !== -1;
+};
 
 let arr = [3, 9, 20, null, null, 15, 7];
+arr = [1,2,2,3,3,null,null,4,4]
 
 const tree1 = buildTree(arr);
 
 printTree(tree1);
 
-console.log(maxDepth(tree1));
+console.log(isBalanced(tree1));
 
