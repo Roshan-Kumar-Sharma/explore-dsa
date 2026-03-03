@@ -113,52 +113,52 @@ function rightView(root: TreeNode | null): number[] {
 }
 
 function topView(root: TreeNode | null): number[] {
-    if(root === null) return [];
+  if (!root) return [];
 
-    const result: number[] = [];
-    const queue: TreeNode[] = [root];
-    while(queue.length) {
-        const levelSize = queue.length;
+  const map = new Map<number, number>();
+  const queue: { node: TreeNode; hd: number }[] = [{ node: root, hd: 0 }];
 
-        for(let i = 0; i < levelSize; i++) {
-            const node = queue.shift()!;
+  while (queue.length) {
+    const { node, hd } = queue.shift()!;
 
-            if(i === 0) {
-                result.push(node.val);
-            } else if (i === levelSize - 1) {
-                result.push(node.val);
-            }
-
-            if(node.left) queue.push(node.left);
-            if(node.right) queue.push(node.right);
-        }
+    if (!map.has(hd)) {
+      map.set(hd, node.val);
     }
 
-    return result;
+    if (node.left) queue.push({ node: node.left, hd: hd - 1 });
+    if (node.right) queue.push({ node: node.right, hd: hd + 1 });
+  }
+
+  const sortedHds = Array.from(map.keys()).sort((a, b) => a - b);
+  return sortedHds.map(hd => map.get(hd)!);
 }
 
 function bottomView(root: TreeNode | null): number[] {
-    if(root === null) return [];
+  if (!root) return [];
 
-    const result: number[] = [];
-    const queue: TreeNode[] = [root];
-    while(queue.length) {
-        const levelSize = queue.length;
+  const map = new Map<number, number>();
+  const queue: { node: TreeNode; hd: number }[] = [{ node: root, hd: 0 }];
+  let minHD = 0, maxHD = 0;
 
-        for(let i = 0; i < levelSize; i++) {
-            const node = queue.shift()!;
+  while (queue.length) {
+    const { node, hd } = queue.shift()!;
 
-            if(node.left === null && node.right === null) {
-                result.push(node.val);
-                continue;
-            }
+    map.set(hd, node.val);
+    // minHD = Math.min(minHD, hd);
+    // maxHD = Math.max(maxHD, hd);
 
-            if(node.left) queue.push(node.left);
-            if(node.right) queue.push(node.right);
-        }
-    }
+    if (node.left) queue.push({ node: node.left, hd: hd - 1 });
+    if (node.right) queue.push({ node: node.right, hd: hd + 1 });
+  }
 
-    return result;
+//   const result: number[] = [];
+//   for (let hd = minHD; hd <= maxHD; hd++) {
+//     result.push(map.get(hd)!);
+//   }
+//   return result;
+
+  const keys = Array.from(map.keys()).sort((a, b) => a - b);
+  return keys.map(key => map.get(key)!);
 }
 
 let arr = [3, 9, 20, null, null, 15, 7];
@@ -167,13 +167,14 @@ arr = [1, 2, 3, null, 5, null, 4]
 arr = [1, 2, 3, 6, 5, 8, 4]
 arr = [4, 2, 1, 3, 11]
 arr = [4, 5, 6, 3, 11]
+// arr = [1,2,3,4,10,9,11,null,5,null,null,null,null,null,null,null,6]
 
 const tree1 = buildTree(arr);
 
 printTree(tree1);
 
-console.log('Top View: ', topView(tree1));
-console.log('Left View: ', leftView(tree1));
+// console.log('Top View: ', topView(tree1));
+// console.log('Left View: ', leftView(tree1));
 console.log('Bottom View: ', bottomView(tree1));
-console.log('Right View: ', rightView(tree1));
+// console.log('Right View: ', rightView(tree1));
 
