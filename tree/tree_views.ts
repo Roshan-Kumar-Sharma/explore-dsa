@@ -173,8 +173,8 @@ const tree1 = buildTree(arr);
 
 printTree(tree1);
 
-// console.log('Top View: ', topView(tree1));
-// console.log('Left View: ', leftView(tree1));
+console.log('Top View: ', topView(tree1));
+console.log('Left View: ', leftView(tree1));
 console.log('Bottom View: ', bottomView(tree1));
-// console.log('Right View: ', rightView(tree1));
+console.log('Right View: ', rightView(tree1));
 

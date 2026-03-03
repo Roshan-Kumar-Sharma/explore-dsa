@@ -121,17 +121,71 @@ function boundaryTraversal(root: TreeNode | null) {
     return result;
 }
 
+function isSymmetric1(root: TreeNode | null): boolean {
+    if(root === null) return true;
+
+    const queue: (TreeNode | null)[] = [root];
+    while(queue.length) {
+        const levelSize = queue.length;
+        const levelValues: (number | null)[] = [];
+        for(let i = 0; i < levelSize; i++) {
+            const node = queue.shift();
+
+            if(node) {
+              levelValues.push(node.val);
+              queue.push(node.left);
+              queue.push(node.right);
+            } else {
+              levelValues.push(null);
+            }
+        }
+
+        for(let start = 0, end = levelValues.length - 1; start < end; start++, end--) {
+            if(levelValues[start] !== levelValues[end]) return false;
+        }
+    }
+
+    return true;
+};
+
+function isSymmetric2(root: TreeNode | null): boolean {
+    if(root === null) return true;
+
+    const queue: (TreeNode | null)[] = [root];
+    while(queue.length) {
+        const levelSize = queue.length;
+        const vals: (number | null)[] = [];
+        for(let i = 0; i < levelSize; i++) {
+            const node = queue.shift();
+
+            if(node) {
+                vals.push(node.val);
+                queue.push(node.left);
+                queue.push(node.right);
+            } else {
+                vals.push(null);
+            }
+        }
+
+        for(let start = 0, end = vals.length - 1; start < end; start++, end--) {
+            if(vals[start] !== vals[end]) return false;
+        }
+    }
+
+    return true;
+};
+
 let arr = [3, 9, 20, null, null, 15, 7];
 arr = [1,2,2,3,3,null,null,4,4];
 arr = [1,2,3,4,5,6,7,null,null,8,9];
 arr = [1,null,2,null,3,null,4,null,null]
 arr = [1,2,2,3,4,4,3]
-arr = [1,2,2,null,3,null,3]
-arr = [2,3,3,4,5,5,4,null,null,8,9,null,null,9,8]
+// arr = [1,2,2,null,3,null,3]
+// arr = [2,3,3,4,5,5,4,null,null,8,9,null,null,9,8]
 
 const tree1 = buildTree(arr);
 
 printTree(tree1);
 
-console.log(boundaryTraversal(tree1));
+console.log(isSymmetric1(tree1))
 
